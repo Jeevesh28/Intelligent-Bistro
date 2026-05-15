@@ -22,7 +22,7 @@ The AI parses natural-language orders like *"two spicy chicken sandwiches, a Cae
 
 ## Demo
 
-> Loom: *link*
+> Loom:
 
 ---
 
@@ -53,7 +53,7 @@ Find your LAN IP on macOS: `ipconfig getifaddr en0`.
 
 **Browse** — 33 dishes across 7 categories. Search by name/ingredient. Multi-select filters (Popular, Vegetarian, Vegan, Spicy, Gluten-free, ❤ Favorites). Per-card star rating + count. Category pills with bidirectional scrollspy (tap to scroll · scroll to highlight).
 
-**Item detail** — image with emoji-gradient fallback, chef's note, ingredients, allergens, 2 reviews. Modifier groups with single/multi semantics (no two milks; pick any extras). Drink size selector showing live price (small −$1, medium, large +$2). Quantity stepper. "Pairs well with" cards that navigate to the partner dish. Live CTA `Add 2 to order · $42.00`.
+**Item detail** — image with emoji-gradient fallback, chef's note, ingredients, allergens, 2 reviews. Modifier groups with single/multi semantics (no two milks; pick any extras). Drink size selector showing live price `(small -$1, medium, large +$2)`. Quantity stepper. "Pairs well with" cards that navigate to the partner dish. Live CTA `Add 2 to order · $42.00`.
 
 **Cart** — line items with stepper + swipe-to-trash. Live subtotal, item count, sticky checkout CTA.
 
@@ -233,8 +233,6 @@ tools/
 
 Covers `priceForSize` (S/M/L deltas, zero floor, unknown size), `priceForModifiers` (priced + free + negative deltas), `computeUnitPrice`, `applyCartAction` for every action type including line-merging by `itemId+modifiers+size` and re-pricing on `update_line`, `parseToolInput` valid/invalid shapes, `parseSuggestion` reason-length enforcement.
 
-Networking, UI, and AI eval are intentionally out of the test scope — the pure-logic suite gives confidence in the correctness-critical core; the rest is faster verified manually + via Loom.
-
 **Menu-preview image verifier** — [tools/menu-preview.html](tools/menu-preview.html). Open in any browser while the backend is running. It fetches `/menu`, renders every dish with photo + dimensions + URL, flags 404s with a red "load failed" badge, and lets you mark any image as "Wrong" for a copy-pasteable replacement list. Built because hand-curating 33 image URLs is error-prone — turned a 30-minute audit into ~5 minutes.
 
 **Smoke prompts for the AI**
@@ -257,25 +255,13 @@ Each with *why not* so a reviewer doesn't wonder.
 
 **No real database.** A `Map<sessionId, Cart>` in process is sufficient to demo the AI/cart loop. Cart clears on backend restart (favorites + orders persist on-device). Stub-ready for SQLite — `applyCartAction` is the only surface that needs to change.
 
-**No real Stripe.** Mock checkout demonstrates the *flow* (three methods, tip presets, validation, processing state). Real Stripe would need API keys, webhooks, PCI considerations, and a native dev build for PaymentSheet.
-
 **No streaming chat.** Documented in [Key decisions](#key-engineering-decisions) above — latency profile for tool-heavy responses doesn't help streaming. Code path exists, gated.
 
 **No voice ordering.** Would require either a Dev Build (`expo-speech-recognition`, ~15 min one-time setup) or backend Whisper. Out of scope for the Expo-Go-only constraint.
 
-**No multimodal photo input.** "Snap a photo → AI finds the closest dish" would be a strong moment via Claude vision; skipped for time. Half-day add.
-
-**Order tracking with real backend updates.** Currently `setTimeout`-driven on device. Real-time would need a status endpoint or WebSocket + push notifications. `OrderProgress` accepts a `currentStage` prop, doesn't care where it comes from — stub-ready.
-
 **User-written reviews.** Reviews are seeded in `reviews.json` as a trust-signal UX flourish. Would need a `POST /reviews/:itemId` + auth.
 
-**Dark mode.** NativeWind v4 supports it via `dark:` variant; palette would need a dark twin. ~2 hours of work and a meaningful lift.
-
 **Group / split-bill ordering.** Adds session-attribution complexity to every cart operation. The single-guest model is the right place to demonstrate the AI loop.
-
-**Formal accessibility pass.** Basic `accessibilityRole` + labels are in place; a full VoiceOver flow, focus order, and contrast audit wasn't done.
-
-**AI eval / regression tests.** Would need fixture prompts + `expectedTools` recordings, run against real Claude (slow, costs money). The 45 deterministic unit tests cover the *non-AI* core; AI behavior is verified via the smoke-prompts checklist above.
 
 ---
 
