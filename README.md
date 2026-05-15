@@ -1,136 +1,51 @@
 # The Intelligent Bistro
 
-A high-fidelity mobile restaurant ordering app where guests browse a 33-item menu and manage a cart through a conversational AI assistant.
+A mobile restaurant ordering app where guests build their cart by talking to an AI assistant. Claude turns requests like *"two spicy chicken sandwiches, a Caesar with chicken, swap the fries for truffle fries, and a large iced tea"* into structured tool calls on a **server-side cart**.
 
-The AI parses natural-language orders like *"two spicy chicken sandwiches, a Caesar with chicken, swap the fries for truffle fries, and a large iced tea"* into structured `tool_use` calls that mutate a **server-side cart** in real time. Both UI taps and AI calls route through the **same** internal `applyCartAction()` — so the cart never diverges from what the assistant thinks it is.
+The core engineering problem: an LLM that edits shared state can misread an order, invent a price, or drift out of sync with what the screen shows. The design rule here is that **the model is never trusted with state or money**.
+
+<!-- Add a 10-second demo GIF here: one chat turn, action chips appearing, mini-cart updating.
+<p align="center"><img src="docs/demo.gif" width="320" alt="Chat turn updating the cart"></p>
+-->
+
+**Stack:** Expo (SDK 54) + React Native · Express + TypeScript · Anthropic SDK (Claude Haiku 4.5, tool use) · Zod · Zustand · TanStack Query · Vitest
 
 ---
 
 ## Contents
 
-1. [Demo](#demo) · [Quick start](#quick-start)
-2. [User functionality](#user-functionality)
-3. [UI experience & usability](#ui-experience--usability)
-4. [AI-driven cart interactions](#ai-driven-cart-interactions)
-5. [Architecture](#architecture) · [Key engineering decisions](#key-engineering-decisions)
-6. [Project structure](#project-structure)
-7. [Tests & verification tools](#tests--verification-tools)
-8. [Improvements intentionally not done](#improvements-intentionally-not-done)
-9. [AI tooling used to build it](#ai-tooling-used-to-build-it)
-
----
-
-## Demo
-
-> Loom: *link*
+1. [Quick start](#quick-start)
+2. [Architecture](#architecture)
+3. [Key engineering decisions](#key-engineering-decisions)
+4. [How the AI edits the cart](#how-the-ai-edits-the-cart)
+5. [Tests and verification](#tests-and-verification)
+6. [Features](#features)
+7. [Project structure](#project-structure)
+8. [Deliberately out of scope](#deliberately-out-of-scope)
+9. [How it was built](#how-it-was-built)
 
 ---
 
 ## Quick start
 
-Prereqs: Node 20+, an Anthropic API key, and either Expo Go on a phone (SDK 54) or Xcode iOS Simulator.
+Prerequisites: Node 20+, an Anthropic API key, and Expo Go on a phone (SDK 54) or the Xcode iOS Simulator.
 
 ```bash
 # Backend
 cd backend && npm install
-cp .env.example .env                # set ANTHROPIC_API_KEY=sk-ant-...
-npm run dev                         # http://0.0.0.0:3000 (LAN-reachable)
+cp .env.example .env          # set ANTHROPIC_API_KEY
+npm run dev                   # http://0.0.0.0:3000, reachable on your LAN
 
 # Mobile (new terminal)
 cd mobile && npm install
-cp .env.example .env                # set EXPO_PUBLIC_API_URL=http://<LAN-IP>:3000
-npx expo start                      # press 'i' for sim, or scan QR
+cp .env.example .env          # set EXPO_PUBLIC_API_URL=http://<LAN-IP>:3000
+npx expo start                # press 'i' for the simulator, or scan the QR code
 
 # Tests
-cd backend && npm test              # 45 vitest specs in ~400ms
+cd backend && npm test        # 45 Vitest specs, ~400 ms
 ```
 
-Find your LAN IP on macOS: `ipconfig getifaddr en0`.
-
----
-
-## User functionality
-
-**Browse** — 33 dishes across 7 categories. Search by name/ingredient. Multi-select filters (Popular, Vegetarian, Vegan, Spicy, Gluten-free, ❤ Favorites). Per-card star rating + count. Category pills with bidirectional scrollspy (tap to scroll · scroll to highlight).
-
-**Item detail** — image with emoji-gradient fallback, chef's note, ingredients, allergens, 2 reviews. Modifier groups with single/multi semantics (no two milks; pick any extras). Drink size selector showing live price (small −$1, medium, large +$2). Quantity stepper. "Pairs well with" cards that navigate to the partner dish. Live CTA `Add 2 to order · $42.00`.
-
-**Cart** — line items with stepper + swipe-to-trash. Live subtotal, item count, sticky checkout CTA.
-
-**Checkout** — three payment tabs (Card with brand auto-detection, Venmo handle, Cash). Tip presets + custom field. Itemized totals.
-
-**Confirmation** — animated 4-stage progress: **Placed → In the kitchen → Plating → Ready**. Live countdown. Confetti at Ready. Order pushed to local history.
-
-**Past orders & reorder** — clock icon in the header (visible only when history exists). One-tap reorder clears the current cart and re-adds every line.
-
-**AI assistant** — Add / Modify / Remove / Inquire / Clear / out-of-menu lookups. Action chips confirm each tool call. Pairing chips suggest 1-tap upsells. **Long-press any action chip** → "What the AI did" inspector showing the raw tool JSON.
-
----
-
-## UI experience & usability
-
-**Visual system** — NativeWind (Tailwind for RN) with a warm restaurant palette (cream neutrals, forest primary, terracotta accents, ink text). Fraunces serif for headers + prices, Inter sans for body. Every screen has deliberate empty / loading / error states.
-
-**Motion** — Moti + Reanimated 4. Cards stagger-fade in. Mini-cart springs in when cart goes empty→non-empty and **bounces on every add** (including AI-driven ones). Cart badge pulses on count change. Order-progress fills smoothly. 22-piece confetti at Ready.
-
-**Loading & refresh** — Shimmering skeleton cards (not a spinner) during menu fetch. Pull-to-refresh with a native forest-green spinner.
-
-**Touch & haptics** — `expo-haptics` for tactile feedback, wrapped in a helper that no-ops on web.
-
----
-
-## AI-driven cart interactions
-
-### Tools the AI can call
-
-Defined in [backend/src/ai/tools.ts](backend/src/ai/tools.ts), validated with Zod, executed in [claude.ts](backend/src/ai/claude.ts):
-
-| Tool | Purpose |
-|---|---|
-| `add_item` | Add a new line (item_id, quantity, modifiers?, size?, notes?) |
-| `update_line` | Modify qty/size/modifiers on an existing line (re-prices automatically) |
-| `remove_item` | Drop a line |
-| `clear_cart` | Start over |
-| `suggest_addon` | **Doesn't mutate** — surfaces as a 1-tap upsell chip in the UI |
-
-### One chat turn end-to-end
-
-```
-User: "Two spicy chicken sandwiches and a large iced tea"
-  │
-  ▼  POST /chat/:sessionId
-runChat (claude.ts, up to 5 rounds):
-  Round 1: Claude emits 2× tool_use { add_item } → backend executes both
-           → tool_result blocks fed back
-  Round 2: Claude emits text + optional tool_use { suggest_addon }
-  ▼
-{ reply, actions[], suggestions[], cart }
-  │
-  ▼
-Frontend: chat bubble + green ✓ action chips + 1-tap upsell pill
-          cartStore.setCart(cart) → mini-cart bounces, badge updates
-```
-
-### What makes the AI feel competent
-
-System prompt ([systemPrompt.ts](backend/src/ai/systemPrompt.ts)) is sectioned and explicit:
-- **CART CHANGES** — must call a tool; batch tools in one turn (no chit-chat between).
-- **CONTEXTUAL REFERENCES** — resolve "that", "it", "make it a large" via the cart snapshot injected each turn.
-- **OFFER PAIRINGS** — `suggest_addon` at most once per turn, only when the just-added item has a `pairings` entry and that pair isn't already in cart.
-- **DRINK SIZES & PRICING** — explicit S/M/L deltas; mention non-medium size in confirmation.
-- **MODIFIER GROUPS** — `[single]/[multi]` markers + inline `+$X` deltas in the rendered menu, so the model can't invent options or hallucinate prices.
-- **OUT-OF-MENU REQUESTS** — 14 example mappings (sushi → Tuna Tartare, pizza → Margherita, water → Iced Tea / Lemonade, ice cream → Apple Pie, breakfast → "not serving tonight, suggest something light"). Always pair the *no* with a named alternative + one-line why + ask before adding.
-
-### Reliability: nothing is trusted
-
-- **Zod** validates every tool input before it touches state.
-- Unknown `item_id` → error returned to Claude as `tool_result { is_error: true }`, so it can self-correct in the next round.
-- `update_line` re-prices the line whenever size or modifiers change — the AI never computes prices; the backend re-derives.
-- `suggest_addon` is rejected if the item is already in cart or doesn't exist.
-
-### The AI Inspector
-
-Long-press any green action chip in chat → bottom-sheet showing the tool name, a friendly description, an OK/Error pill, each parameter Claude emitted, and the raw JSON in a Menlo code block. The caption — *"every cart change in this app flows through the same applyCartAction function"* — is the architectural insight a reviewer wants to see.
+On macOS, `ipconfig getifaddr en0` prints your LAN IP.
 
 ---
 
@@ -149,7 +64,7 @@ Long-press any green action chip in chat → bottom-sheet showing the tool name,
 │   (orders/favorites          │         │                              │
 │    persisted via             │         │  AI loop (claude.ts):        │
 │    AsyncStorage)             │         │   @anthropic-ai/sdk@0.96     │
-│                              │         │   Claude haiku-4-5           │
+│                              │         │   Claude Haiku 4.5           │
 │  TanStack Query for /menu    │         │   ≤5 tool-use rounds         │
 │  NativeWind 4.2 styling      │         │                              │
 │  Moti + Reanimated 4 anims   │         │  Zod on every tool input     │
@@ -162,23 +77,118 @@ Long-press any green action chip in chat → bottom-sheet showing the tool name,
 
 ## Key engineering decisions
 
-**One source of truth for the cart.** Both UI mutations and AI tool calls funnel through `applyCartAction(sessionId, action)` in [sessions.ts](backend/src/store/sessions.ts). The frontend never edits cart shape locally — every change round-trips and returns the new server-side cart. Zero drift between what Claude thinks the cart looks like and what the user sees.
+**One source of truth for the cart.** UI taps and AI tool calls both go through `applyCartAction(sessionId, action)` in [sessions.ts](backend/src/store/sessions.ts). The frontend never edits the cart locally: every change round-trips to the server and returns the new cart. The assistant's view of the cart and the user's view cannot drift apart.
 
-**Server-side pricing math.** `priceForSize` + `priceForModifiers` + `computeUnitPrice` in [pricing.ts](backend/src/lib/pricing.ts) are the only places a price is calculated. The AI never computes prices — the backend re-derives them from the item's base + size delta + modifier deltas. Mirror in [mobile/lib/pricing.ts](mobile/lib/pricing.ts) exists only for live preview on the item-detail CTA; the cart line is whatever the server says.
+**Prices are computed only on the server.** `priceForSize`, `priceForModifiers` and `computeUnitPrice` in [pricing.ts](backend/src/lib/pricing.ts) are the only places a price is calculated. The model never computes a price; the backend re-derives it from the item's base price plus size and modifier deltas. A mirror in [mobile/lib/pricing.ts](mobile/lib/pricing.ts) exists only for the live preview on the item screen; the cart line is always whatever the server says.
 
-**Modifier groups, not flat strings.** Started with `modifiers: string[]`, broke down once we needed mutual exclusivity ("no two milks") and priced add-ons ("+$5 add chicken"). Replaced with:
+**Modifier groups instead of flat strings.** The first version used `modifiers: string[]`, which broke as soon as the menu needed mutual exclusivity ("no two milks") and priced add-ons ("+$5 add chicken"). It became:
+
 ```ts
 ModifierGroup = { id, label, type: "single" | "multi", options: { name, price? }[] }
 ```
-UI enforces single-select by deselecting siblings. AI sees `[single]/[multi]` markers + price deltas inline in the prompt.
 
-**Why JSON, not streaming SSE.** Streaming was attempted twice (`@anthropic-ai/sdk` 0.32 then 0.96). The SDK works; the latency profile doesn't help streaming. For "dinner for two", Claude generates ~10 `tool_use` blocks before any text — with streaming, the user sees an empty bubble with a cursor for ~4s; with JSON, a typing indicator for the same window then chips appear together. Latter reads snappier on a demo phone. Streaming code is preserved (`runChatStream` + `api.chatStream` + `react-native-sse`), gated behind a route switch — flipping it on is a 2-line change. Honest tradeoff over hidden code.
+The UI enforces single-select by deselecting siblings, and the prompt shows the model `[single]` / `[multi]` markers with inline price deltas so it cannot invent options.
 
-**Why Claude haiku-4-5.** Fast TTFB (~700ms), strong tool use, ~1/4 the cost of Sonnet. System prompt is ~6KB; per-turn cost is negligible at this scale.
+**JSON responses instead of streaming.** Streaming was implemented twice (`@anthropic-ai/sdk` 0.32, then 0.96). The SDK worked, but the latency profile didn't benefit: for "dinner for two", Claude emits around ten `tool_use` blocks before any text, so a streamed reply shows an empty bubble for ~4 s. A typing indicator followed by all action chips at once reads faster. The streaming path (`runChatStream`, `api.chatStream`, `react-native-sse`) is kept behind a route switch; turning it on is a two-line change.
 
-**Backend binds to `0.0.0.0`.** Explicit in [index.ts](backend/src/index.ts) so a phone on the same LAN can reach the dev server without tunneling.
+**Claude Haiku 4.5.** Fast time to first token (~700 ms), reliable tool use, and about a quarter of Sonnet's cost. The ~6 KB system prompt makes per-turn cost negligible at this scale.
 
-**Sessions without auth.** Each device generates a UUID v4 in AsyncStorage on first launch. That's the `sessionId`. No login — sufficient for a single-user take-home; production would attach to a user account.
+**Sessions without auth.** Each device generates a UUID v4 on first launch and uses it as the `sessionId`. This is enough for a single-user demo; production would attach carts to user accounts.
+
+**Backend binds to `0.0.0.0`.** Set explicitly in [index.ts](backend/src/index.ts) so a phone on the same LAN can reach the dev server without tunneling.
+
+---
+
+## How the AI edits the cart
+
+### Tools
+
+Defined in [backend/src/ai/tools.ts](backend/src/ai/tools.ts), validated with Zod, and executed in [claude.ts](backend/src/ai/claude.ts):
+
+| Tool | Purpose |
+|---|---|
+| `add_item` | Add a line (`item_id`, `quantity`, optional `modifiers`, `size`, `notes`) |
+| `update_line` | Change quantity, size or modifiers on an existing line; re-prices automatically |
+| `remove_item` | Remove a line |
+| `clear_cart` | Empty the cart |
+| `suggest_addon` | Does not mutate the cart; surfaces a one-tap upsell chip in the UI |
+
+### One chat turn
+
+```
+User: "Two spicy chicken sandwiches and a large iced tea"
+  │
+  ▼  POST /chat/:sessionId
+runChat (claude.ts, up to 5 rounds):
+  Round 1: Claude emits 2x tool_use { add_item } -> backend executes both
+           -> tool_result blocks fed back
+  Round 2: Claude emits text + optional tool_use { suggest_addon }
+  ▼
+{ reply, actions[], suggestions[], cart }
+  │
+  ▼
+Frontend: chat bubble + action chips + upsell pill
+          cartStore.setCart(cart) -> mini-cart and badge update
+```
+
+### Reliability: nothing the model sends is trusted
+
+- **Zod validates every tool input** before it touches state.
+- **Errors go back to the model.** An unknown `item_id` returns `tool_result { is_error: true }`, so Claude can correct itself in the next round.
+- **`update_line` always re-prices** when size or modifiers change.
+- **`suggest_addon` is rejected** if the item doesn't exist or is already in the cart.
+
+### Prompt design
+
+The system prompt ([systemPrompt.ts](backend/src/ai/systemPrompt.ts)) is split into explicit rules:
+
+- **Cart changes** must go through a tool, batched in one turn.
+- **Contextual references** ("that", "make it a large") are resolved against a cart snapshot injected every turn.
+- **Pairings** are offered at most once per turn, only when the item has a pairing that isn't already in the cart.
+- **Sizes, modifiers and prices** are rendered inline with their deltas, so the model can't hallucinate options.
+- **Out-of-menu requests** map to a named alternative (14 examples, e.g. sushi to Tuna Tartare), with a one-line reason and a confirmation before adding.
+
+### Action inspector
+
+Long-press any action chip in the chat to open a sheet showing the tool name, its parameters, an OK/error status and the raw JSON. It makes the "every change goes through `applyCartAction`" guarantee visible in the app.
+
+---
+
+## Tests and verification
+
+**Unit tests** (`cd backend && npm test`): 45 Vitest specs in ~400 ms.
+
+```
+✓ src/lib/pricing.test.ts        (16 tests)
+✓ src/store/sessions.test.ts     (13 tests)
+✓ src/ai/tools.test.ts           (16 tests)
+```
+
+Coverage: size deltas, priced, free and negative modifier deltas, `computeUnitPrice`, every `applyCartAction` type (including merging lines by `itemId + modifiers + size` and re-pricing on `update_line`), and valid and invalid tool inputs.
+
+**Menu image verifier** ([tools/menu-preview.html](tools/menu-preview.html)). Renders every dish from `/menu` with its photo, flags failed loads, and lets you mark wrong images to produce a replacement list. Built because hand-checking 33 image URLs kept going wrong; it cut the audit from ~30 minutes to ~5.
+
+**Smoke prompts**
+
+| Prompt | Expected behavior |
+|---|---|
+| `Build me dinner for two under $60` | Several tool calls batched in one turn |
+| `Make it medium rare` | Contextual reference resolved to `update_line` |
+| `Actually make that two` | `update_line` quantity on the most recent line |
+| `What's good and vegetarian?` | Text reply, no tool call |
+| `Got any sushi?` | Out-of-menu request mapped to Tuna Tartare |
+| `Clear my cart` | `clear_cart` |
+
+---
+
+## Features
+
+- **Menu:** 33 dishes in 7 categories, search by name or ingredient, multi-select dietary filters, favorites, and category pills with scrollspy.
+- **Item detail:** single and multi-select modifier groups, drink sizes with live price deltas, quantity stepper, and "pairs well with" links.
+- **Cart and checkout:** steppers, swipe to delete, tip presets, and card, Venmo or cash payment tabs.
+- **Order tracking:** animated four-stage progress (placed, in the kitchen, plating, ready) and a reorderable order history.
+- **Assistant:** add, modify, remove, ask, clear, and out-of-menu lookups, with action chips confirming every tool call.
+- **Polish:** NativeWind styling, Moti and Reanimated animations, skeleton loading states, and haptics.
 
 ---
 
@@ -190,29 +200,27 @@ backend/
 │   ├── index.ts                # Express bootstrap, binds 0.0.0.0:3000
 │   ├── routes/                 # menu, cart, chat
 │   ├── ai/
-│   │   ├── claude.ts           # runChat + tool-use loop
-│   │   ├── tools.ts            # Tool[] for SDK + Zod parsers
-│   │   └── systemPrompt.ts     # persona + behavior rules + menu injection
-│   ├── store/sessions.ts       # Map<sessionId, Cart> + applyCartAction
+│   │   ├── claude.ts           # runChat and the tool-use loop
+│   │   ├── tools.ts            # tool definitions and Zod parsers
+│   │   └── systemPrompt.ts     # behavior rules and menu injection
+│   ├── store/sessions.ts       # Map<sessionId, Cart> and applyCartAction
 │   ├── lib/pricing.ts          # priceForSize, priceForModifiers, computeUnitPrice
 │   ├── data/
-│   │   ├── menu.json           # 33 items × 7 categories with modifierGroups
-│   │   └── reviews.json        # mock reviews keyed by item id
-│   ├── *.test.ts               # 45 vitest specs
+│   │   ├── menu.json           # 33 items, 7 categories, modifier groups
+│   │   └── reviews.json        # seeded reviews keyed by item id
+│   ├── *.test.ts               # 45 Vitest specs
 │   └── types.ts
 └── vitest.config.ts
 
 mobile/
 ├── app/                        # Expo Router screens (file-based)
-│   ├── _layout.tsx             # providers + font loading + store hydration
-│   ├── index.tsx               # menu (SectionList + scrollspy + filters + search)
-│   ├── item/[id].tsx           # details
+│   ├── _layout.tsx             # providers, fonts, store hydration
+│   ├── index.tsx               # menu: SectionList, scrollspy, filters, search
+│   ├── item/[id].tsx           # item detail
 │   ├── cart.tsx · chat.tsx · checkout.tsx · confirmation.tsx · orders.tsx
-├── components/                 # MenuItemCard, ChatBubble, ActionInspector,
-│                               # OrderProgress, MiniCart, HeartButton, ...
+├── components/                 # MenuItemCard, ChatBubble, ActionInspector, ...
 ├── store/                      # Zustand: cart, chat, orders, favorites
-├── lib/                        # api, types, pricing mirror, search, filters,
-│                               # session, haptics
+├── lib/                        # api, types, pricing mirror, search, filters, session
 └── tailwind.config.js
 
 tools/
@@ -221,72 +229,21 @@ tools/
 
 ---
 
-## Tests & verification tools
+## Deliberately out of scope
 
-**Unit tests** — `cd backend && npm test`. 45 vitest specs in ~400ms:
-
-```
-✓ src/lib/pricing.test.ts        (16 tests)
-✓ src/store/sessions.test.ts     (13 tests)
-✓ src/ai/tools.test.ts           (16 tests)
-```
-
-Covers `priceForSize` (S/M/L deltas, zero floor, unknown size), `priceForModifiers` (priced + free + negative deltas), `computeUnitPrice`, `applyCartAction` for every action type including line-merging by `itemId+modifiers+size` and re-pricing on `update_line`, `parseToolInput` valid/invalid shapes, `parseSuggestion` reason-length enforcement.
-
-Networking, UI, and AI eval are intentionally out of the test scope — the pure-logic suite gives confidence in the correctness-critical core; the rest is faster verified manually + via Loom.
-
-**Menu-preview image verifier** — [tools/menu-preview.html](tools/menu-preview.html). Open in any browser while the backend is running. It fetches `/menu`, renders every dish with photo + dimensions + URL, flags 404s with a red "load failed" badge, and lets you mark any image as "Wrong" for a copy-pasteable replacement list. Built because hand-curating 33 image URLs is error-prone — turned a 30-minute audit into ~5 minutes.
-
-**Smoke prompts for the AI**
-
-| Prompt | What it should do |
-|---|---|
-| `Build me dinner for two under $60` | Batch tool calls in one turn |
-| `Make it medium rare` | Contextual reference → `update_line` |
-| `Actually make that two` | `update_line` quantity on most recent line |
-| `What's good and vegetarian?` | Plain text reply, no tool call |
-| `Got any sushi?` | Out-of-menu → Tuna Tartare suggestion |
-| `Add a ribeye and a glass of red` | After add, a 🍷 pairing chip may surface |
-| `Clear my cart` | `clear_cart` |
+- **No database.** An in-process `Map<sessionId, Cart>` is enough to demonstrate the AI and cart loop; carts reset when the backend restarts. `applyCartAction` is the only surface that would change to add SQLite.
+- **No streaming chat.** See [Key engineering decisions](#key-engineering-decisions). The code path exists behind a switch.
+- **No voice ordering.** It needs a development build (`expo-speech-recognition`) or a backend Whisper call, which conflicts with the Expo Go-only setup.
+- **No user-written reviews or split bills.** Both add auth or session attribution to every cart operation without changing the AI loop being demonstrated.
 
 ---
 
-## Improvements intentionally not done
+## How it was built
 
-Each with *why not* so a reviewer doesn't wonder.
+I made the architectural calls: a server-owned cart, Anthropic tool use, Zod at every boundary, and modifier groups instead of strings. I used Claude Code as a pair programmer for implementation, with plan mode for each decision before writing code. A few pivots along the way:
 
-**No real database.** A `Map<sessionId, Cart>` in process is sufficient to demo the AI/cart loop. Cart clears on backend restart (favorites + orders persist on-device). Stub-ready for SQLite — `applyCartAction` is the only surface that needs to change.
+- **Streaming:** hung on SDK 0.32 and was reverted. Retried on 0.96 after the Expo upgrade, it was still latency-bound, so it was reverted again and the tradeoff documented.
+- **Styling:** a NativeWind 4.2 and Reanimated 3 worklets-plugin conflict forced a pin to 4.1.23, then an upgrade back to 4.2 with the worklets plugin during the SDK 54 move.
+- **Images:** stock photo IDs kept mismatching dishes, which led to building the menu image verifier.
 
-**No real Stripe.** Mock checkout demonstrates the *flow* (three methods, tip presets, validation, processing state). Real Stripe would need API keys, webhooks, PCI considerations, and a native dev build for PaymentSheet.
-
-**No streaming chat.** Documented in [Key decisions](#key-engineering-decisions) above — latency profile for tool-heavy responses doesn't help streaming. Code path exists, gated.
-
-**No voice ordering.** Would require either a Dev Build (`expo-speech-recognition`, ~15 min one-time setup) or backend Whisper. Out of scope for the Expo-Go-only constraint.
-
-**No multimodal photo input.** "Snap a photo → AI finds the closest dish" would be a strong moment via Claude vision; skipped for time. Half-day add.
-
-**Order tracking with real backend updates.** Currently `setTimeout`-driven on device. Real-time would need a status endpoint or WebSocket + push notifications. `OrderProgress` accepts a `currentStage` prop, doesn't care where it comes from — stub-ready.
-
-**User-written reviews.** Reviews are seeded in `reviews.json` as a trust-signal UX flourish. Would need a `POST /reviews/:itemId` + auth.
-
-**Dark mode.** NativeWind v4 supports it via `dark:` variant; palette would need a dark twin. ~2 hours of work and a meaningful lift.
-
-**Group / split-bill ordering.** Adds session-attribution complexity to every cart operation. The single-guest model is the right place to demonstrate the AI loop.
-
-**Formal accessibility pass.** Basic `accessibilityRole` + labels are in place; a full VoiceOver flow, focus order, and contrast audit wasn't done.
-
-**AI eval / regression tests.** Would need fixture prompts + `expectedTools` recordings, run against real Claude (slow, costs money). The 45 deterministic unit tests cover the *non-AI* core; AI behavior is verified via the smoke-prompts checklist above.
-
----
-
-## AI tooling used to build it
-
-Built end-to-end with **Claude Code** as the primary pair programmer.
-
-- **Plan mode** for every architectural decision: UI library (NativeWind vs Tamagui), AI provider (Anthropic vs OpenAI), cart-state ownership (server vs client), modifier-group schema, voice route, streaming retry, slice scoping at each milestone.
-- **Iterative multi-turn implementation**, with frequent tactical pivots when reality intervened:
-  - Streaming → SDK 0.32 hang → revert. Retry on 0.96 after the Expo upgrade → still latency-bound → revert again, document tradeoff honestly.
-  - NativeWind 4.2 + Reanimated 3 worklets-plugin conflict → pinned to 4.1.23 → upgraded again to 4.2 + the worklets plugin during the SDK 54 jump.
-  - Unsplash photo IDs kept mismatching dishes → built [menu-preview.html](tools/menu-preview.html) to make the audit cheap.
-
-Other tooling in use: **Vitest** (tests), **Zod** (validation everywhere), **`tsx watch`** (live backend reloads), **Expo Go** on a physical iPhone for the entire mobile testing loop.
+Other tooling: Vitest, Zod, `tsx watch` for live backend reloads, and Expo Go on a physical iPhone for the full mobile testing loop.
