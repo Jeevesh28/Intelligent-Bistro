@@ -1,0 +1,702 @@
+{
+  "restaurant": {
+    "name": "The Intelligent Bistro",
+    "tagline": "Modern American · Open Kitchen"
+  },
+  "categories": [
+    { "id": "starters", "name": "Starters" },
+    { "id": "mains", "name": "Mains" },
+    { "id": "sandwiches", "name": "Sandwiches" },
+    { "id": "salads", "name": "Salads" },
+    { "id": "sides", "name": "Sides" },
+    { "id": "drinks", "name": "Drinks" },
+    { "id": "desserts", "name": "Desserts" }
+  ],
+  "items": [
+    {
+      "id": "burrata",
+      "name": "Burrata",
+      "description": "Creamy burrata with tomatoes, basil, and toasted bread.",
+      "longDescription": "Hand-stretched burrata over sun-ripened heirloom tomatoes with cold-pressed basil oil and Maldon salt. Thick slices of charred sourdough on the side.",
+      "ingredients": ["Burrata", "Tomatoes", "Basil oil", "Maldon salt", "Sourdough"],
+      "pairings": ["red-wine", "iced-tea"],
+      "allergens": ["Dairy", "Gluten"],
+      "price": 16.0,
+      "category": "starters",
+      "tags": ["vegetarian"],
+      "emoji": "🍅",
+      "accent": ["#EDD3C4", "#C46E4D"],
+      "image": "https://i.imgur.com/sbWt1Lh.jpeg"
+    },
+    {
+      "id": "tuna-tartare",
+      "name": "Tuna Tartare",
+      "description": "Fresh tuna, avocado, soy-ginger, crispy wonton.",
+      "longDescription": "Yellowfin diced à la minute, dressed in tamari, ginger, and yuzu. Folded with Hass avocado, topped with paper-thin radish and toasted sesame.",
+      "ingredients": ["Tuna", "Avocado", "Tamari", "Yuzu", "Ginger", "Sesame", "Wonton"],
+      "pairings": ["cappuccino", "lemonade"],
+      "allergens": ["Fish", "Soy", "Sesame", "Gluten"],
+      "price": 19.0,
+      "category": "starters",
+      "tags": ["seafood", "gluten-free-option"],
+      "emoji": "🍣",
+      "accent": ["#F4C7B2", "#E98666"],
+      "image": "https://i.imgur.com/pXWf6IU.png"
+    },
+    {
+      "id": "brussels-sprouts",
+      "name": "Brussels Sprouts",
+      "description": "Roasted crispy with honey-chili glaze and almonds.",
+      "longDescription": "Halved sprouts flash-fried until lacy and dark, tossed in a sweet-spicy honey glaze. Finished with toasted almonds and pickled shallot.",
+      "ingredients": ["Brussels sprouts", "Honey", "Almonds", "Shallot"],
+      "pairings": ["draft-beer", "iced-tea"],
+      "allergens": ["Tree nuts"],
+      "price": 12.0,
+      "category": "starters",
+      "tags": ["vegetarian", "spicy"],
+      "emoji": "🥬",
+      "accent": ["#D3E1C2", "#6F8F4D"],
+      "image": "https://i.imgur.com/zaksBRi.jpeg"
+    },
+    {
+      "id": "buffalo-wings",
+      "name": "Buffalo Wings",
+      "description": "Crispy wings, buffalo sauce, blue cheese, celery.",
+      "longDescription": "Bone-in wings brined overnight, twice-fried for shatter-crisp skin, tossed in our house buffalo. Cold celery and blue cheese on the side.",
+      "ingredients": ["Chicken wings", "Cayenne", "Butter", "Celery", "Blue cheese"],
+      "pairings": ["draft-beer", "iced-tea"],
+      "allergens": ["Dairy"],
+      "price": 15.0,
+      "category": "starters",
+      "tags": ["spicy", "popular"],
+      "modifierGroups": [
+        {
+          "id": "heat",
+          "label": "Heat level",
+          "type": "single",
+          "options": [
+            { "name": "mild" },
+            { "name": "medium" },
+            { "name": "hot" },
+            { "name": "extra hot" }
+          ]
+        }
+      ],
+      "emoji": "🍗",
+      "accent": ["#F2BBA4", "#C8501D"],
+      "image": "https://i.imgur.com/bKfJw5D.png"
+    },
+    {
+      "id": "tomato-soup",
+      "name": "Tomato Soup",
+      "description": "Creamy roasted tomato soup with basil and crouton.",
+      "longDescription": "San Marzano tomatoes roasted with garlic and shallot, blended velvety smooth, finished with basil oil and a quenelle of crème fraîche. Big focaccia crouton on top.",
+      "ingredients": ["Tomatoes", "Garlic", "Cream", "Basil", "Focaccia"],
+      "pairings": ["red-wine", "burrata"],
+      "allergens": ["Dairy", "Gluten"],
+      "price": 11.0,
+      "category": "starters",
+      "tags": ["vegetarian"],
+      "emoji": "🍲",
+      "accent": ["#F5C2A8", "#C9482A"],
+      "image": "https://i.imgur.com/41BtJtE.jpeg"
+    },
+    {
+      "id": "margherita-pizza",
+      "name": "Margherita Pizza",
+      "description": "Wood-fired thin crust, tomato, mozzarella, basil.",
+      "longDescription": "House dough cold-fermented 48 hours, stretched thin and blistered in our wood oven. Topped with crushed San Marzano, fior di latte, basil, and olive oil.",
+      "ingredients": ["Pizza dough", "Tomatoes", "Mozzarella", "Basil", "Olive oil"],
+      "pairings": ["red-wine", "draft-beer"],
+      "allergens": ["Gluten", "Dairy"],
+      "price": 14.0,
+      "category": "starters",
+      "tags": ["vegetarian"],
+      "emoji": "🍕",
+      "accent": ["#F4D6B2", "#C57A33"],
+      "image": "https://i.imgur.com/0oGx4oB.png"
+    },
+    {
+      "id": "spicy-chicken-sandwich",
+      "name": "Spicy Chicken Sandwich",
+      "description": "Fried chicken with Nashville hot sauce on a brioche bun.",
+      "longDescription": "Boneless thigh brined in buttermilk 24 hours, pressure-fried, then brushed with Nashville hot oil. Layered with pickles and slaw on a toasted brioche bun.",
+      "ingredients": ["Chicken", "Buttermilk", "Cayenne", "Pickles", "Slaw", "Brioche"],
+      "pairings": ["draft-beer", "iced-tea"],
+      "allergens": ["Gluten", "Dairy"],
+      "price": 17.0,
+      "category": "sandwiches",
+      "tags": ["spicy", "popular"],
+      "modifierGroups": [
+        {
+          "id": "extras",
+          "label": "Customize",
+          "type": "multi",
+          "options": [
+            { "name": "extra spicy" },
+            { "name": "no pickles" },
+            { "name": "gluten-free bun" }
+          ]
+        }
+      ],
+      "emoji": "🌶️",
+      "accent": ["#F2C5B0", "#C84B2C"],
+      "image": "https://i.imgur.com/hdQecSN.png"
+    },
+    {
+      "id": "fried-chicken-sandwich",
+      "name": "Fried Chicken Sandwich",
+      "description": "Crispy fried chicken with garlic aioli on brioche.",
+      "longDescription": "Same 24-hour buttermilk brine and shatter-crispy crust as our spicy version, dressed with garlic aioli, butter lettuce, and a thick slice of tomato on a brioche bun.",
+      "ingredients": ["Chicken", "Buttermilk", "Garlic aioli", "Lettuce", "Tomato", "Brioche"],
+      "pairings": ["lemonade", "draft-beer"],
+      "allergens": ["Gluten", "Dairy", "Egg"],
+      "price": 16.0,
+      "category": "sandwiches",
+      "tags": ["popular"],
+      "modifierGroups": [
+        {
+          "id": "extras",
+          "label": "Customize",
+          "type": "multi",
+          "options": [
+            { "name": "no pickles" },
+            { "name": "gluten-free bun" },
+            { "name": "add cheese", "price": 1.0 }
+          ]
+        }
+      ],
+      "emoji": "🥪",
+      "accent": ["#F2E1B0", "#D69B3C"],
+      "image": "https://i.imgur.com/c4Ms6DO.png"
+    },
+    {
+      "id": "cheeseburger",
+      "name": "Cheeseburger",
+      "description": "Smash burger, aged cheddar, bacon jam, potato bun.",
+      "longDescription": "Dry-aged beef smashed on a hot flat-top for a crispy crust. Topped with aged cheddar, sweet-savory bacon jam, butter lettuce, and house pickles on a potato bun.",
+      "ingredients": ["Beef", "Cheddar", "Bacon jam", "Lettuce", "Pickles", "Potato bun"],
+      "pairings": ["draft-beer", "red-wine"],
+      "allergens": ["Gluten", "Dairy"],
+      "price": 19.0,
+      "category": "sandwiches",
+      "tags": ["popular"],
+      "modifierGroups": [
+        {
+          "id": "doneness",
+          "label": "Cook temperature",
+          "type": "single",
+          "options": [
+            { "name": "medium rare" },
+            { "name": "medium" },
+            { "name": "well done" }
+          ]
+        },
+        {
+          "id": "extras",
+          "label": "Customize",
+          "type": "multi",
+          "options": [
+            { "name": "add egg", "price": 2.0 },
+            { "name": "no bacon" }
+          ]
+        }
+      ],
+      "emoji": "🍔",
+      "accent": ["#E8C9A0", "#8B5A2B"],
+      "image": "https://i.imgur.com/XEIgSJu.png"
+    },
+    {
+      "id": "grilled-cheese",
+      "name": "Mushroom Grilled Cheese",
+      "description": "Roasted mushrooms, gruyère, caramelized onion, sourdough.",
+      "longDescription": "Wild mushrooms roasted with thyme and sherry, layered with melted gruyère and caramelized onion between buttered sourdough and griddled golden.",
+      "ingredients": ["Mushrooms", "Gruyère", "Caramelized onion", "Sourdough"],
+      "pairings": ["red-wine", "tomato-soup"],
+      "allergens": ["Dairy", "Gluten"],
+      "price": 15.0,
+      "category": "sandwiches",
+      "tags": ["vegetarian"],
+      "emoji": "🍄",
+      "accent": ["#E8D5B7", "#7A5230"],
+      "image": "https://i.imgur.com/AzjPxPT.png"
+    },
+    {
+      "id": "lobster-roll",
+      "name": "Lobster Roll",
+      "description": "Cold-water lobster, lemon-tarragon mayo, buttered bun.",
+      "longDescription": "A quarter-pound of Maine lobster knuckle and claw, lightly dressed in lemon-tarragon mayo. Tucked into a buttered, griddled split-top bun with chips on the side.",
+      "ingredients": ["Lobster", "Lemon", "Tarragon mayo", "Celery", "Bun"],
+      "pairings": ["draft-beer", "lemonade"],
+      "allergens": ["Shellfish", "Egg", "Gluten"],
+      "price": 32.0,
+      "category": "sandwiches",
+      "tags": ["seafood", "popular"],
+      "emoji": "🦞",
+      "accent": ["#F7CBB8", "#C9512D"],
+      "image": "https://i.imgur.com/pB8Dw0U.png"
+    },
+    {
+      "id": "grilled-salmon",
+      "name": "Grilled Salmon",
+      "description": "Salmon with lemon-caper butter, couscous, broccolini.",
+      "longDescription": "North Atlantic salmon seared skin-on for shatter-crispy skin, finished with lemon-caper brown butter over pearl couscous and herbs. Charred broccolini on the side.",
+      "ingredients": ["Salmon", "Capers", "Butter", "Couscous", "Broccolini"],
+      "pairings": ["red-wine", "cappuccino"],
+      "allergens": ["Fish", "Dairy", "Gluten"],
+      "price": 28.0,
+      "category": "mains",
+      "tags": ["seafood", "gluten-free-option"],
+      "emoji": "🐟",
+      "accent": ["#FBCFB6", "#E47B4F"],
+      "image": "https://i.imgur.com/QWye7rh.png"
+    },
+    {
+      "id": "ribeye-steak",
+      "name": "Ribeye Steak",
+      "description": "12oz prime ribeye, peppercorn jus, hand-cut fries.",
+      "longDescription": "Twelve ounces of USDA Prime ribeye, dry-aged 28 days for deep flavor. Seared on the plancha, finished with smoked salt and a peppercorn pan jus. Hand-cut fries on the side.",
+      "ingredients": ["Ribeye", "Smoked salt", "Black peppercorn", "Beef stock", "Fries"],
+      "pairings": ["red-wine", "truffle-fries"],
+      "allergens": [],
+      "price": 42.0,
+      "category": "mains",
+      "tags": ["popular"],
+      "modifierGroups": [
+        {
+          "id": "doneness",
+          "label": "Cook temperature",
+          "type": "single",
+          "options": [
+            { "name": "rare" },
+            { "name": "medium rare" },
+            { "name": "medium" },
+            { "name": "medium well" },
+            { "name": "well done" }
+          ]
+        }
+      ],
+      "emoji": "🥩",
+      "accent": ["#E0B6A6", "#8B3A2C"],
+      "image": "https://i.imgur.com/D5Y593n.png"
+    },
+    {
+      "id": "mushroom-risotto",
+      "name": "Mushroom Risotto",
+      "description": "Creamy arborio rice with porcini, parmesan, truffle oil.",
+      "longDescription": "Carnaroli rice stirred with white wine and mushroom stock until creamy. Folded with porcini, sautéed trumpets, and aged parmesan. White truffle oil and chives to finish.",
+      "ingredients": ["Rice", "Porcini", "Mushrooms", "Parmesan", "Truffle oil", "Chives"],
+      "pairings": ["red-wine", "burrata"],
+      "allergens": ["Dairy"],
+      "price": 24.0,
+      "category": "mains",
+      "tags": ["vegetarian"],
+      "emoji": "🍚",
+      "accent": ["#EDE2C9", "#9C7A4A"],
+      "image": "https://i.imgur.com/SHsA5n6.png"
+    },
+    {
+      "id": "pesto-pasta",
+      "name": "Pesto Pasta",
+      "description": "Fresh linguine with basil pesto, cherry tomatoes, pecorino.",
+      "longDescription": "Fresh linguine tossed with vibrant green pesto from Genovese basil, pine nuts, garlic, and aged pecorino. Finished with sweet blistered cherry tomatoes.",
+      "ingredients": ["Linguine", "Basil", "Pine nuts", "Garlic", "Pecorino", "Cherry tomatoes"],
+      "pairings": ["red-wine", "lemonade"],
+      "allergens": ["Gluten", "Dairy", "Tree nuts"],
+      "price": 21.0,
+      "category": "mains",
+      "tags": ["vegetarian"],
+      "modifierGroups": [
+        {
+          "id": "protein",
+          "label": "Add protein",
+          "type": "multi",
+          "options": [
+            { "name": "add chicken", "price": 5.0 },
+            { "name": "add shrimp", "price": 7.0 }
+          ]
+        },
+        {
+          "id": "pasta",
+          "label": "Pasta",
+          "type": "multi",
+          "options": [{ "name": "gluten-free pasta" }]
+        }
+      ],
+      "emoji": "🍝",
+      "accent": ["#D8E4B8", "#5E8038"],
+      "image": "https://i.imgur.com/HokGcMN.jpeg"
+    },
+    {
+      "id": "roast-chicken",
+      "name": "Roast Chicken",
+      "description": "Half chicken with lemon, rosemary, potatoes, jus.",
+      "longDescription": "Half a free-range chicken brined and roasted with lemon, rosemary, and thyme until the skin is mahogany-crisp. Served with smashed fingerling potatoes and pan jus.",
+      "ingredients": ["Chicken", "Lemon", "Rosemary", "Thyme", "Potatoes", "Garlic"],
+      "pairings": ["red-wine", "side-salad"],
+      "allergens": [],
+      "price": 26.0,
+      "category": "mains",
+      "tags": ["gluten-free-option"],
+      "emoji": "🍗",
+      "accent": ["#F0D9A8", "#B47B23"],
+      "image": "https://i.imgur.com/Vid8zhh.jpeg"
+    },
+    {
+      "id": "caesar-salad",
+      "name": "Caesar Salad",
+      "description": "Romaine, parmesan, croutons, anchovy dressing.",
+      "longDescription": "Crisp little gem lettuce dressed in our white-anchovy Caesar with lemon and cured egg yolk. Topped with curls of parmesan and focaccia croutons fried in garlic butter.",
+      "ingredients": ["Romaine", "Anchovy", "Egg yolk", "Lemon", "Parmesan", "Focaccia"],
+      "pairings": ["lemonade", "draft-beer"],
+      "allergens": ["Fish", "Egg", "Dairy", "Gluten"],
+      "price": 13.0,
+      "category": "salads",
+      "tags": ["vegetarian-option"],
+      "modifierGroups": [
+        {
+          "id": "protein",
+          "label": "Add protein",
+          "type": "multi",
+          "options": [
+            { "name": "add chicken", "price": 5.0 },
+            { "name": "add salmon", "price": 6.0 }
+          ]
+        },
+        {
+          "id": "extras",
+          "label": "Customize",
+          "type": "multi",
+          "options": [{ "name": "no anchovy" }]
+        }
+      ],
+      "emoji": "🥗",
+      "accent": ["#DCEAC5", "#5C8A3F"],
+      "image": "https://i.imgur.com/GBm8Fsz.jpeg"
+    },
+    {
+      "id": "quinoa-bowl",
+      "name": "Quinoa Bowl",
+      "description": "Kale, quinoa, roasted squash, pomegranate, lemon dressing.",
+      "longDescription": "Massaged lacinato kale, fluffy red quinoa, and roasted delicata squash with pomegranate seeds and toasted pepitas. Preserved-lemon vinaigrette.",
+      "ingredients": ["Kale", "Quinoa", "Squash", "Pomegranate", "Pepitas", "Lemon"],
+      "pairings": ["lemonade", "iced-tea"],
+      "allergens": [],
+      "price": 15.0,
+      "category": "salads",
+      "tags": ["vegan", "gluten-free"],
+      "modifierGroups": [
+        {
+          "id": "protein",
+          "label": "Add protein",
+          "type": "multi",
+          "options": [
+            { "name": "add chicken", "price": 5.0 },
+            { "name": "add salmon", "price": 6.0 },
+            { "name": "add avocado", "price": 2.0 }
+          ]
+        }
+      ],
+      "emoji": "🥬",
+      "accent": ["#CFE3B9", "#4F7B33"],
+      "image": "https://i.imgur.com/s5edXBh.png"
+    },
+    {
+      "id": "cobb-salad",
+      "name": "Cobb Salad",
+      "description": "Romaine, avocado, bacon, blue cheese, egg, tomato.",
+      "longDescription": "Crisp romaine arranged with rows of jammy egg, smoked bacon, cherry tomato, ripe avocado, and crumbled blue cheese. Red-wine vinaigrette.",
+      "ingredients": ["Romaine", "Egg", "Bacon", "Tomato", "Avocado", "Blue cheese"],
+      "pairings": ["draft-beer", "iced-tea"],
+      "allergens": ["Egg", "Dairy"],
+      "price": 17.0,
+      "category": "salads",
+      "tags": ["gluten-free", "popular"],
+      "modifierGroups": [
+        {
+          "id": "extras",
+          "label": "Customize",
+          "type": "multi",
+          "options": [
+            { "name": "no bacon" },
+            { "name": "no blue cheese" },
+            { "name": "add chicken", "price": 5.0 }
+          ]
+        }
+      ],
+      "emoji": "🥗",
+      "accent": ["#E3D8AA", "#7A6116"],
+      "image": "https://i.imgur.com/5LYUwtB.png"
+    },
+    {
+      "id": "truffle-fries",
+      "name": "Truffle Fries",
+      "description": "Hand-cut fries with truffle oil and parmesan.",
+      "longDescription": "Russet potatoes hand-cut and double-fried for shatter-crisp outsides and pillowy centers. Tossed hot with truffle oil, parmesan, and parsley.",
+      "ingredients": ["Potato", "Truffle oil", "Parmesan", "Parsley", "Sea salt"],
+      "pairings": ["cheeseburger", "draft-beer"],
+      "allergens": ["Dairy"],
+      "price": 9.0,
+      "category": "sides",
+      "tags": ["vegetarian", "popular"],
+      "emoji": "🍟",
+      "accent": ["#F4DCA2", "#C68B1F"],
+      "image": "https://i.imgur.com/XqErjGY.png"
+    },
+    {
+      "id": "mac-and-cheese",
+      "name": "Mac & Cheese",
+      "description": "Cavatappi with three cheeses, baked golden.",
+      "longDescription": "Cavatappi blanketed in a velvety béchamel of aged cheddar, gruyère, and parmesan. Baked in a cast iron with a buttery herbed-breadcrumb topping.",
+      "ingredients": ["Cavatappi", "Cheddar", "Gruyère", "Parmesan", "Breadcrumbs"],
+      "pairings": ["draft-beer", "red-wine"],
+      "allergens": ["Gluten", "Dairy"],
+      "price": 12.0,
+      "category": "sides",
+      "tags": ["vegetarian"],
+      "emoji": "🧀",
+      "accent": ["#F4D894", "#C58A1A"],
+      "image": "https://i.imgur.com/uTzD4aH.png"
+    },
+    {
+      "id": "garlic-bread",
+      "name": "Garlic Bread",
+      "description": "Sourdough with roasted garlic butter and parsley.",
+      "longDescription": "Thick slices of house sourdough smothered in roasted-garlic compound butter, finished with parsley and flaky sea salt. Toasted hard, served hot.",
+      "ingredients": ["Sourdough", "Garlic", "Butter", "Parsley", "Sea salt"],
+      "pairings": ["pesto-pasta", "tomato-soup"],
+      "allergens": ["Gluten", "Dairy"],
+      "price": 8.0,
+      "category": "sides",
+      "tags": ["vegetarian"],
+      "emoji": "🍞",
+      "accent": ["#EFD7A3", "#A87521"],
+      "image": "https://i.imgur.com/vq7nUld.png"
+    },
+    {
+      "id": "side-salad",
+      "name": "Side Salad",
+      "description": "Mixed greens, fennel, white balsamic.",
+      "longDescription": "A simple, bright counterpoint: tender mixed greens, shaved fennel, and a quick toss in lemon-white-balsamic with cracked pepper.",
+      "ingredients": ["Mixed greens", "Fennel", "White balsamic", "Olive oil", "Lemon"],
+      "pairings": ["roast-chicken", "ribeye-steak"],
+      "allergens": [],
+      "price": 7.0,
+      "category": "sides",
+      "tags": ["vegan", "gluten-free"],
+      "emoji": "🥗",
+      "accent": ["#D3E3B5", "#5A7D2F"],
+      "image": "https://i.imgur.com/KooalXQ.png"
+    },
+    {
+      "id": "iced-tea",
+      "name": "Iced Tea",
+      "description": "Cold-brewed black tea with lemon.",
+      "longDescription": "Single-origin Ceylon black tea cold-brewed 12 hours for a smooth, never-bitter cup. Over ice with a wedge of lemon.",
+      "ingredients": ["Black tea", "Lemon", "Ice"],
+      "allergens": [],
+      "price": 5.0,
+      "category": "drinks",
+      "modifierGroups": [
+        {
+          "id": "sweetness",
+          "label": "Sweetness",
+          "type": "single",
+          "options": [
+            { "name": "unsweetened" },
+            { "name": "lightly sweet" },
+            { "name": "sweet" }
+          ]
+        }
+      ],
+      "emoji": "🧋",
+      "accent": ["#E0CFB3", "#8A6A3D"],
+      "image": "https://i.imgur.com/ToWAwhK.jpeg"
+    },
+    {
+      "id": "lemonade",
+      "name": "Lemonade",
+      "description": "Fresh-squeezed lemons with mint.",
+      "longDescription": "Meyer lemons squeezed to order, balanced with raw cane sugar simple syrup and a generous bunch of crushed mint. Served tall over ice.",
+      "ingredients": ["Lemons", "Cane sugar", "Mint", "Ice"],
+      "allergens": [],
+      "price": 6.0,
+      "category": "drinks",
+      "emoji": "🍋",
+      "accent": ["#FBEFA5", "#D6A21A"],
+      "image": "https://i.imgur.com/6ppbQRb.jpeg"
+    },
+    {
+      "id": "cappuccino",
+      "name": "Cappuccino",
+      "description": "Espresso with steamed milk and cocoa.",
+      "longDescription": "A double shot of our house espresso blend topped with silky steamed milk and a dusting of dark cocoa. Served in a warmed ceramic cup.",
+      "ingredients": ["Espresso", "Milk", "Cocoa"],
+      "allergens": ["Dairy"],
+      "price": 5.0,
+      "category": "drinks",
+      "modifierGroups": [
+        {
+          "id": "milk",
+          "label": "Milk",
+          "type": "single",
+          "options": [
+            { "name": "whole milk" },
+            { "name": "oat milk" },
+            { "name": "almond milk" }
+          ]
+        },
+        {
+          "id": "extras",
+          "label": "Extras",
+          "type": "multi",
+          "options": [{ "name": "decaf" }]
+        }
+      ],
+      "emoji": "☕",
+      "accent": ["#E5C9A4", "#7B4E1F"],
+      "image": "https://i.imgur.com/xnr5YpJ.png"
+    },
+    {
+      "id": "cold-brew",
+      "name": "Cold Brew",
+      "description": "Slow-steeped coffee, served over ice.",
+      "longDescription": "Coarse-ground Ethiopian beans steeped in cold filtered water for 18 hours, then filtered twice for clarity. Served black over ice.",
+      "ingredients": ["Coffee", "Water", "Ice"],
+      "allergens": [],
+      "price": 6.0,
+      "category": "drinks",
+      "modifierGroups": [
+        {
+          "id": "milk",
+          "label": "Milk",
+          "type": "single",
+          "options": [
+            { "name": "black" },
+            { "name": "splash of cream" },
+            { "name": "oat milk" }
+          ]
+        },
+        {
+          "id": "flavor",
+          "label": "Flavor",
+          "type": "multi",
+          "options": [{ "name": "vanilla" }]
+        }
+      ],
+      "emoji": "🧊",
+      "accent": ["#D4BFA0", "#5C3A14"],
+      "image": "https://i.imgur.com/WnwiSrL.png"
+    },
+    {
+      "id": "red-wine",
+      "name": "Red Wine",
+      "description": "Cabernet Sauvignon by the glass.",
+      "longDescription": "A medium-plus bodied Sonoma Cabernet — black cherry, cedar, and soft tannins. Pairs beautifully with our ribeye or burger.",
+      "ingredients": ["Cabernet Sauvignon"],
+      "pairings": ["ribeye-steak", "cheeseburger"],
+      "allergens": ["Sulfites"],
+      "price": 14.0,
+      "category": "drinks",
+      "modifierGroups": [
+        {
+          "id": "pour",
+          "label": "Pour",
+          "type": "single",
+          "options": [
+            { "name": "6oz" },
+            { "name": "9oz", "price": 5.0 }
+          ]
+        }
+      ],
+      "emoji": "🍷",
+      "accent": ["#D9B8B8", "#7A1F2F"],
+      "image": "https://i.imgur.com/wHJznbL.jpeg"
+    },
+    {
+      "id": "draft-beer",
+      "name": "Draft Beer",
+      "description": "Rotating local IPA on tap.",
+      "longDescription": "Always rotating, always local. Currently pouring a West Coast IPA: bright citrus and pine, dry finish.",
+      "ingredients": ["IPA"],
+      "pairings": ["spicy-chicken-sandwich", "buffalo-wings"],
+      "allergens": ["Gluten"],
+      "price": 9.0,
+      "category": "drinks",
+      "modifierGroups": [
+        {
+          "id": "pour",
+          "label": "Pour",
+          "type": "single",
+          "options": [
+            { "name": "half pint", "price": -3.0 },
+            { "name": "pint" }
+          ]
+        }
+      ],
+      "emoji": "🍺",
+      "accent": ["#EFD08A", "#A37108"],
+      "image": "https://i.imgur.com/cpl3Qwe.png"
+    },
+    {
+      "id": "chocolate-cake",
+      "name": "Chocolate Cake",
+      "description": "Flourless dark chocolate cake with sea salt.",
+      "longDescription": "An impossibly rich flourless torte made with Valrhona 70% dark chocolate and brown butter. Served with crème fraîche and a pinch of Maldon salt.",
+      "ingredients": ["Dark chocolate", "Butter", "Egg", "Crème fraîche", "Maldon salt"],
+      "pairings": ["cappuccino", "red-wine"],
+      "allergens": ["Dairy", "Egg"],
+      "price": 11.0,
+      "category": "desserts",
+      "tags": ["vegetarian", "gluten-free"],
+      "emoji": "🍫",
+      "accent": ["#D7B79A", "#5B3A1F"],
+      "image": "https://i.imgur.com/cLjxuOq.png"
+    },
+    {
+      "id": "creme-brulee",
+      "name": "Crème Brûlée",
+      "description": "Vanilla custard with caramelized sugar crust.",
+      "longDescription": "Slow-baked custard scented with vanilla bean, topped with a hand-torched layer of caramelized sugar that cracks under your spoon. Macerated berries.",
+      "ingredients": ["Cream", "Egg yolk", "Vanilla", "Cane sugar", "Berries"],
+      "pairings": ["cappuccino"],
+      "allergens": ["Dairy", "Egg"],
+      "price": 10.0,
+      "category": "desserts",
+      "tags": ["vegetarian"],
+      "emoji": "🍮",
+      "accent": ["#F6E2BD", "#B9802F"],
+      "image": "https://i.imgur.com/5VluCP6.png"
+    },
+    {
+      "id": "tiramisu",
+      "name": "Tiramisu",
+      "description": "Espresso-soaked ladyfingers with mascarpone and cocoa.",
+      "longDescription": "Layers of espresso-soaked savoiardi between clouds of mascarpone whipped with Marsala wine and egg yolk. Dusted with bitter cocoa.",
+      "ingredients": ["Ladyfingers", "Espresso", "Mascarpone", "Marsala", "Egg yolk", "Cocoa"],
+      "pairings": ["cappuccino", "cold-brew"],
+      "allergens": ["Gluten", "Dairy", "Egg"],
+      "price": 11.0,
+      "category": "desserts",
+      "tags": ["vegetarian"],
+      "emoji": "🍰",
+      "accent": ["#E6CFA8", "#6E4424"],
+      "image": "https://i.imgur.com/ReJru3I.png"
+    },
+    {
+      "id": "apple-pie",
+      "name": "Apple Pie",
+      "description": "Warm apple crumble with vanilla ice cream.",
+      "longDescription": "Honeycrisp and Pink Lady apples tossed in cinnamon and Calvados, baked under an oat-pecan crumble. Served warm with a scoop of vanilla bean ice cream.",
+      "ingredients": ["Apples", "Oats", "Pecans", "Cinnamon", "Vanilla ice cream"],
+      "pairings": ["cappuccino", "cold-brew"],
+      "allergens": ["Gluten", "Dairy", "Tree nuts"],
+      "price": 10.0,
+      "category": "desserts",
+      "tags": ["vegetarian"],
+      "emoji": "🥧",
+      "accent": ["#F2D3A1", "#9B5A1A"],
+      "image": "https://i.imgur.com/sVaCpe5.png"
+    }
+  ]
+}

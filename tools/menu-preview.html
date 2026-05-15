@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Menu image verifier · The Intelligent Bistro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --cream: #FAF7F0;
+    --cream2: #F2EBDD;
+    --ink: #1B1F1A;
+    --ink2: #6B6F66;
+    --forest: #3F5F3C;
+    --forest-deep: #22381F;
+    --red: #C46E4D;
+    --green: #5C7E5A;
+    --gray: #9CA095;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 24px 28px 80px;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--cream2);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font: 600 26px/1.2 "Iowan Old Style", "Times New Roman", serif;
+    margin: 0;
+  }
+  .sub { color: var(--ink2); font-size: 13px; }
+  .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  input[type="text"] {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--cream2);
+    background: white;
+    min-width: 240px;
+    font-size: 13px;
+  }
+  button {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--cream2);
+    background: white;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  button.primary {
+    background: var(--forest);
+    border-color: var(--forest);
+    color: white;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--ink2);
+    background: var(--cream2);
+  }
+  .badge.ok { background: rgba(63,95,60,0.12); color: var(--forest); }
+  .badge.bad { background: rgba(196,110,77,0.15); color: var(--red); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--cream2);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card.wrong { outline: 2px solid var(--red); outline-offset: -2px; }
+  .imgwrap {
+    position: relative;
+    height: 200px;
+    background: var(--cream2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .imgwrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .emoji-fallback {
+    font-size: 84px;
+    line-height: 1;
+  }
+  .status-pill {
+    position: absolute; top: 8px; left: 8px;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.88);
+    color: var(--ink);
+    backdrop-filter: blur(6px);
+  }
+  .content { padding: 12px 14px 14px; flex: 1; display: flex; flex-direction: column; }
+  .row1 { display: flex; align-items: baseline; gap: 8px; justify-content: space-between; }
+  .name { font: 600 16px/1.25 "Iowan Old Style", "Times New Roman", serif; }
+  .price { font-weight: 600; color: var(--forest); }
+  .desc { color: var(--ink2); font-size: 13px; margin-top: 4px; }
+  .meta { color: var(--gray); font-size: 11px; margin-top: 8px; word-break: break-all; }
+  .actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .actions a, .actions button {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--cream2);
+    background: white;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .actions button.wrong-btn[data-on="1"] {
+    background: var(--red); border-color: var(--red); color: white;
+  }
+  .summary {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    background: white;
+    border: 1px solid var(--cream2);
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .summary strong { color: var(--ink); }
+  details.bad-list {
+    margin: 14px 0 18px;
+    padding: 12px 14px;
+    background: rgba(196,110,77,0.08);
+    border: 1px solid rgba(196,110,77,0.25);
+    border-radius: 12px;
+  }
+  details.bad-list summary {
+    cursor: pointer; font-weight: 600; color: var(--red);
+  }
+  details.bad-list pre {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 12px;
+  }
+  .err {
+    padding: 12px 14px;
+    border: 1px solid rgba(196,110,77,0.3);
+    background: rgba(196,110,77,0.08);
+    color: var(--red);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Menu image verifier</h1>
+    <div class="sub">Fetches <code>GET /menu</code> and renders every dish. Tick "Wrong" on any image that doesn't match the dish — the bottom panel shows a copy-pasteable list of items to fix.</div>
+  </div>
+  <div class="controls">
+    <input id="api" type="text" value="http://localhost:3000" />
+    <input id="filter" type="text" placeholder="filter by name / id…" />
+    <button id="reload" class="primary">Reload</button>
+  </div>
+</header>
+
+<div id="error"></div>
+<div id="summary"></div>
+<details class="bad-list" open>
+  <summary>Marked-wrong items <span id="bad-count">(0)</span></summary>
+  <pre id="bad-pre">No items marked yet.</pre>
+</details>
+
+<div id="grid" class="grid"></div>
+
+<script>
+  const $api = document.getElementById("api");
+  const $filter = document.getElementById("filter");
+  const $reload = document.getElementById("reload");
+  const $grid = document.getElementById("grid");
+  const $err = document.getElementById("error");
+  const $summary = document.getElementById("summary");
+  const $badCount = document.getElementById("bad-count");
+  const $badPre = document.getElementById("bad-pre");
+
+  const STORAGE = "bistro.verifier.wrong";
+  let wrong = new Set(JSON.parse(localStorage.getItem(STORAGE) || "[]"));
+  let items = [];
+
+  function saveWrong() {
+    localStorage.setItem(STORAGE, JSON.stringify([...wrong]));
+    refreshBadList();
+  }
+  function refreshBadList() {
+    $badCount.textContent = `(${wrong.size})`;
+    if (wrong.size === 0) {
+      $badPre.textContent = "No items marked yet. Click \"Wrong\" on a card to flag its image.";
+      return;
+    }
+    const lines = [];
+    for (const id of [...wrong].sort()) {
+      const item = items.find(i => i.id === id);
+      if (!item) continue;
+      lines.push(`${id.padEnd(28)}  ${item.name.padEnd(34)}  ${item.image || "(no image)"}`);
+    }
+    $badPre.textContent = lines.join("\n");
+  }
+
+  function render() {
+    const q = $filter.value.trim().toLowerCase();
+    $grid.innerHTML = "";
+    let total = 0, withImg = 0, loaded = 0, failed = 0, missing = 0;
+    for (const item of items) {
+      total++;
+      if (!item.image) missing++;
+      else withImg++;
+
+      if (q && !item.id.toLowerCase().includes(q) && !item.name.toLowerCase().includes(q)) {
+        continue;
+      }
+
+      const card = document.createElement("div");
+      card.className = "card" + (wrong.has(item.id) ? " wrong" : "");
+
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "imgwrap";
+      const pill = document.createElement("div");
+      pill.className = "status-pill";
+      pill.textContent = "Loading…";
+      imgWrap.appendChild(pill);
+
+      if (item.image) {
+        const img = document.createElement("img");
+        img.referrerPolicy = "no-referrer";
+        img.src = item.image;
+        img.alt = item.name;
+        img.onload = () => {
+          pill.textContent = `${img.naturalWidth}×${img.naturalHeight}`;
+          pill.className = "status-pill";
+          loaded++;
+          updateSummary(total, withImg, loaded, failed, missing);
+        };
+        img.onerror = () => {
+          pill.textContent = "load failed";
+          pill.style.background = "rgba(196,110,77,0.9)";
+          pill.style.color = "white";
+          imgWrap.removeChild(img);
+          const fb = document.createElement("div");
+          fb.className = "emoji-fallback";
+          fb.textContent = item.emoji || "🍽️";
+          imgWrap.appendChild(fb);
+          failed++;
+          updateSummary(total, withImg, loaded, failed, missing);
+        };
+        imgWrap.appendChild(img);
+      } else {
+        pill.textContent = "no image";
+        const fb = document.createElement("div");
+        fb.className = "emoji-fallback";
+        fb.textContent = item.emoji || "🍽️";
+        imgWrap.appendChild(fb);
+      }
+      card.appendChild(imgWrap);
+
+      const content = document.createElement("div");
+      content.className = "content";
+      content.innerHTML = `
+        <div class="row1">
+          <div class="name">${escapeHtml(item.name)} <span class="badge">${escapeHtml(item.category)}</span></div>
+          <div class="price">$${Number(item.price).toFixed(2)}</div>
+        </div>
+        <div class="desc">${escapeHtml(item.description || "")}</div>
+        <div class="meta"><strong>id:</strong> ${escapeHtml(item.id)}<br/><strong>image:</strong> ${escapeHtml(item.image || "(none)")}</div>
+        <div class="actions">
+          ${item.image ? `<a href="${item.image}" target="_blank" rel="noopener">Open URL</a>` : ""}
+          ${item.image ? `<a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(item.name + ' food')}" target="_blank" rel="noopener">Google image search</a>` : ""}
+          <a href="https://unsplash.com/s/photos/${encodeURIComponent(item.name)}" target="_blank" rel="noopener">Unsplash search</a>
+          <button class="wrong-btn" data-id="${item.id}" data-on="${wrong.has(item.id) ? 1 : 0}">${wrong.has(item.id) ? "Unmark" : "Wrong"}</button>
+        </div>
+      `;
+      card.appendChild(content);
+      $grid.appendChild(card);
+    }
+    updateSummary(total, withImg, loaded, failed, missing);
+
+    $grid.querySelectorAll("button.wrong-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        if (wrong.has(id)) wrong.delete(id); else wrong.add(id);
+        saveWrong();
+        render();
+      });
+    });
+  }
+
+  function updateSummary(total, withImg, loaded, failed, missing) {
+    $summary.className = "summary";
+    $summary.innerHTML = `
+      <span><strong>Total:</strong> ${total}</span>
+      <span><strong>With image URL:</strong> ${withImg}</span>
+      <span><strong>Loaded:</strong> ${loaded}</span>
+      <span><strong>Failed:</strong> ${failed}</span>
+      <span><strong>No image:</strong> ${missing}</span>
+      <span><strong>Marked wrong:</strong> ${wrong.size}</span>
+    `;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  }
+
+  async function load() {
+    $err.innerHTML = "";
+    $grid.innerHTML = "";
+    items = [];
+    try {
+      const res = await fetch($api.value.replace(/\/+$/, "") + "/menu");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      items = Array.isArray(json.items) ? json.items : [];
+      render();
+      refreshBadList();
+    } catch (e) {
+      $err.innerHTML = `<div class="err">Couldn't load menu from <code>${escapeHtml($api.value)}/menu</code>: ${escapeHtml(String(e))}<br/>Is the backend running? <code>cd backend && npm run dev</code></div>`;
+    }
+  }
+
+  $reload.addEventListener("click", load);
+  $filter.addEventListener("input", render);
+  load();
+</script>
+</body>
+</html>

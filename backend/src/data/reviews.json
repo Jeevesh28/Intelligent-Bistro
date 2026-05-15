@@ -1,0 +1,266 @@
+{
+  "burrata": {
+    "rating": 4.7,
+    "reviewCount": 312,
+    "reviews": [
+      { "name": "Priya R.", "stars": 5, "text": "The tomatoes were so ripe I almost cried. The bread was perfectly charred, not burnt.", "date": "2 weeks ago" },
+      { "name": "Marcus W.", "stars": 4, "text": "Good burrata, slightly under-seasoned for me. Bread was the star.", "date": "1 month ago" }
+    ]
+  },
+  "tuna-tartare": {
+    "rating": 4.6,
+    "reviewCount": 187,
+    "reviews": [
+      { "name": "Helena K.", "stars": 5, "text": "Fish was incredibly fresh. The yuzu kick at the end is what makes this dish.", "date": "1 week ago" },
+      { "name": "David L.", "stars": 4, "text": "Portions could be larger for the price, but quality is excellent.", "date": "3 weeks ago" }
+    ]
+  },
+  "brussels-sprouts": {
+    "rating": 4.8,
+    "reviewCount": 421,
+    "reviews": [
+      { "name": "Jordan M.", "stars": 5, "text": "I do not even like brussels sprouts and I cleaned the plate. The glaze is addictive.", "date": "4 days ago" },
+      { "name": "Sam P.", "stars": 5, "text": "Crispiest sprouts in the city, hands down. Get a second order to share.", "date": "2 weeks ago" }
+    ]
+  },
+  "buffalo-wings": {
+    "rating": 4.5,
+    "reviewCount": 268,
+    "reviews": [
+      { "name": "Tasha B.", "stars": 5, "text": "Asked for hot, they delivered. The blue cheese was clearly house-made.", "date": "5 days ago" },
+      { "name": "Ryan O.", "stars": 4, "text": "Solid wings. Sauce ratio could be a touch more generous.", "date": "1 month ago" }
+    ]
+  },
+  "tomato-soup": {
+    "rating": 4.4,
+    "reviewCount": 142,
+    "reviews": [
+      { "name": "Iris H.", "stars": 5, "text": "Tastes like my grandma made it, but with real tomatoes. The crouton is huge.", "date": "1 week ago" },
+      { "name": "Ben T.", "stars": 4, "text": "Comforting and well-balanced. Wish it came with more bread on the side.", "date": "3 weeks ago" }
+    ]
+  },
+  "margherita-pizza": {
+    "rating": 4.6,
+    "reviewCount": 389,
+    "reviews": [
+      { "name": "Carla F.", "stars": 5, "text": "Real Neapolitan-style crust. Charred just right. Mozzarella was creamy.", "date": "2 days ago" },
+      { "name": "Aaron J.", "stars": 4, "text": "Excellent pizza, but bring a fork — center can be soupy.", "date": "2 weeks ago" }
+    ]
+  },
+  "spicy-chicken-sandwich": {
+    "rating": 4.9,
+    "reviewCount": 512,
+    "reviews": [
+      { "name": "Maya S.", "stars": 5, "text": "Best fried chicken sandwich I have had in years. The heat builds slowly.", "date": "3 days ago" },
+      { "name": "Tim G.", "stars": 5, "text": "Got the extra spicy. Tears, but worth it. Slaw cools things down perfectly.", "date": "2 weeks ago" }
+    ]
+  },
+  "fried-chicken-sandwich": {
+    "rating": 4.7,
+    "reviewCount": 298,
+    "reviews": [
+      { "name": "Olivia C.", "stars": 5, "text": "Crispy crust, juicy inside, the brioche soaks up the aioli — chef's kiss.", "date": "6 days ago" },
+      { "name": "Nikhil P.", "stars": 4, "text": "Great if you can't do spice. Wish there were more pickles though.", "date": "1 month ago" }
+    ]
+  },
+  "cheeseburger": {
+    "rating": 4.8,
+    "reviewCount": 467,
+    "reviews": [
+      { "name": "Marcus L.", "stars": 5, "text": "Bacon jam is a stroke of genius. Beef tasted like beef, which is rare these days.", "date": "1 week ago" },
+      { "name": "Jen R.", "stars": 5, "text": "Asked for medium rare and got exactly that. Bun did not fall apart on me.", "date": "2 weeks ago" }
+    ]
+  },
+  "grilled-cheese": {
+    "rating": 4.5,
+    "reviewCount": 156,
+    "reviews": [
+      { "name": "Anna V.", "stars": 5, "text": "Genuinely the best grilled cheese I have eaten. Mushrooms taste earthy and rich.", "date": "5 days ago" },
+      { "name": "Felix N.", "stars": 4, "text": "Comfort food at its finest. Heavy though — share it.", "date": "3 weeks ago" }
+    ]
+  },
+  "lobster-roll": {
+    "rating": 4.7,
+    "reviewCount": 234,
+    "reviews": [
+      { "name": "Sasha K.", "stars": 5, "text": "Generous lobster, light on the mayo so the meat shines. Top-split toasted just right.", "date": "4 days ago" },
+      { "name": "Greg M.", "stars": 4, "text": "Pricey but you get what you pay for. Chips on the side were perfect.", "date": "2 weeks ago" }
+    ]
+  },
+  "grilled-salmon": {
+    "rating": 4.6,
+    "reviewCount": 178,
+    "reviews": [
+      { "name": "Diana A.", "stars": 5, "text": "Skin shattered with my fork. Broccolini had a great char.", "date": "1 week ago" },
+      { "name": "Patrick W.", "stars": 4, "text": "Salmon was perfect medium. Couscous a bit dry, but fish is the headline.", "date": "1 month ago" }
+    ]
+  },
+  "ribeye-steak": {
+    "rating": 4.9,
+    "reviewCount": 401,
+    "reviews": [
+      { "name": "Roberto E.", "stars": 5, "text": "Asked for medium rare. Got medium rare. Crust was beautiful. Fries are bonus.", "date": "2 days ago" },
+      { "name": "Sienna H.", "stars": 5, "text": "Tender all the way through. Pepper jus is essential. Get the red wine.", "date": "1 week ago" }
+    ]
+  },
+  "mushroom-risotto": {
+    "rating": 4.6,
+    "reviewCount": 189,
+    "reviews": [
+      { "name": "Marco D.", "stars": 5, "text": "Properly al dente. Truffle oil was subtle, not overpowering like most places.", "date": "5 days ago" },
+      { "name": "Lila W.", "stars": 4, "text": "Comforting and rich. A touch heavy at the end — share or save for lunch.", "date": "2 weeks ago" }
+    ]
+  },
+  "pesto-pasta": {
+    "rating": 4.4,
+    "reviewCount": 145,
+    "reviews": [
+      { "name": "Emilio R.", "stars": 5, "text": "Vibrant green pesto, you can taste the fresh basil. Added chicken — well worth it.", "date": "1 week ago" },
+      { "name": "Hannah K.", "stars": 4, "text": "Pasta was perfectly fresh. Just a touch oilier than I'd like.", "date": "3 weeks ago" }
+    ]
+  },
+  "roast-chicken": {
+    "rating": 4.7,
+    "reviewCount": 213,
+    "reviews": [
+      { "name": "Wendy F.", "stars": 5, "text": "Skin was shattering-crisp. Smashed potatoes were buttery and herby.", "date": "4 days ago" },
+      { "name": "Aiden T.", "stars": 4, "text": "Simple done well. Wish there were more potatoes alongside.", "date": "1 month ago" }
+    ]
+  },
+  "caesar-salad": {
+    "rating": 4.6,
+    "reviewCount": 267,
+    "reviews": [
+      { "name": "Beatrice L.", "stars": 5, "text": "Anchovy dressing is the real deal. Croutons fried in garlic butter — heaven.", "date": "3 days ago" },
+      { "name": "Tom S.", "stars": 4, "text": "Classic done right. A bit pricey for a salad but the parmesan is generous.", "date": "2 weeks ago" }
+    ]
+  },
+  "quinoa-bowl": {
+    "rating": 4.5,
+    "reviewCount": 132,
+    "reviews": [
+      { "name": "Naomi G.", "stars": 5, "text": "Vegan bowl that doesn't feel like a punishment. Pomegranate was a bright surprise.", "date": "6 days ago" },
+      { "name": "Chris D.", "stars": 4, "text": "Light and filling. Added salmon and it was a complete meal.", "date": "3 weeks ago" }
+    ]
+  },
+  "cobb-salad": {
+    "rating": 4.6,
+    "reviewCount": 198,
+    "reviews": [
+      { "name": "Renee P.", "stars": 5, "text": "Eggs were jammy, not chalky. Blue cheese was strong in a good way.", "date": "5 days ago" },
+      { "name": "Kevin H.", "stars": 4, "text": "Plenty to share. Could use a touch more dressing.", "date": "1 month ago" }
+    ]
+  },
+  "truffle-fries": {
+    "rating": 4.8,
+    "reviewCount": 524,
+    "reviews": [
+      { "name": "Anya J.", "stars": 5, "text": "Crispy, salty, garlicky, generously parmesan'd. Don't skip these.", "date": "1 day ago" },
+      { "name": "Drew F.", "stars": 5, "text": "Truffle oil was real. Order one for the table and one for yourself.", "date": "1 week ago" }
+    ]
+  },
+  "mac-and-cheese": {
+    "rating": 4.5,
+    "reviewCount": 178,
+    "reviews": [
+      { "name": "Megan B.", "stars": 5, "text": "Bubbly, golden, hits all the comfort buttons. Crumb topping is everything.", "date": "4 days ago" },
+      { "name": "Vince M.", "stars": 4, "text": "Rich and gooey. Bring an appetite — even half is plenty.", "date": "2 weeks ago" }
+    ]
+  },
+  "garlic-bread": {
+    "rating": 4.4,
+    "reviewCount": 89,
+    "reviews": [
+      { "name": "Lucy A.", "stars": 5, "text": "Soft inside, crispy edges, way more garlic than you'd expect — perfect.", "date": "1 week ago" },
+      { "name": "Marc P.", "stars": 4, "text": "Good but small portion. Order two if you're sharing.", "date": "1 month ago" }
+    ]
+  },
+  "side-salad": {
+    "rating": 4.2,
+    "reviewCount": 67,
+    "reviews": [
+      { "name": "Iris H.", "stars": 4, "text": "Light, fresh, bright dressing. Exactly what a side salad should be.", "date": "1 week ago" },
+      { "name": "Owen R.", "stars": 4, "text": "Tiny portion. Pairs well with the heavier mains.", "date": "3 weeks ago" }
+    ]
+  },
+  "iced-tea": {
+    "rating": 4.3,
+    "reviewCount": 102,
+    "reviews": [
+      { "name": "Jenna T.", "stars": 5, "text": "Genuinely smooth, no bitterness. The cold brewing makes a difference.", "date": "3 days ago" },
+      { "name": "Pete C.", "stars": 4, "text": "Get the unsweetened — refreshing. Sweet was a touch too sweet for me.", "date": "2 weeks ago" }
+    ]
+  },
+  "lemonade": {
+    "rating": 4.5,
+    "reviewCount": 156,
+    "reviews": [
+      { "name": "Sarah K.", "stars": 5, "text": "Tastes like real lemons because it is. Mint is a lovely touch.", "date": "5 days ago" },
+      { "name": "Liam O.", "stars": 4, "text": "Just sweet enough. Could be a touch tarter — but excellent overall.", "date": "1 month ago" }
+    ]
+  },
+  "cappuccino": {
+    "rating": 4.5,
+    "reviewCount": 224,
+    "reviews": [
+      { "name": "Elena V.", "stars": 5, "text": "Genuine espresso quality, dense foam, dusted just right. Oat milk option is perfect.", "date": "2 days ago" },
+      { "name": "Marco T.", "stars": 4, "text": "Solid cappuccino. Could be a touch hotter when it arrives.", "date": "2 weeks ago" }
+    ]
+  },
+  "cold-brew": {
+    "rating": 4.6,
+    "reviewCount": 145,
+    "reviews": [
+      { "name": "Priscilla N.", "stars": 5, "text": "Smooth, low-acid, exactly what cold brew should be. The vanilla add-on is great.", "date": "4 days ago" },
+      { "name": "Sam W.", "stars": 4, "text": "Strong and clean. A splash of cream balances it nicely.", "date": "2 weeks ago" }
+    ]
+  },
+  "red-wine": {
+    "rating": 4.4,
+    "reviewCount": 167,
+    "reviews": [
+      { "name": "Vince M.", "stars": 5, "text": "Generous pour at 9oz. Pairs beautifully with the ribeye. Smooth tannins.", "date": "1 week ago" },
+      { "name": "Caroline B.", "stars": 4, "text": "Good wine list. The Cab is a safe and tasty choice.", "date": "3 weeks ago" }
+    ]
+  },
+  "draft-beer": {
+    "rating": 4.5,
+    "reviewCount": 198,
+    "reviews": [
+      { "name": "Will D.", "stars": 5, "text": "Love the rotating local taps. This week's IPA was bright and balanced.", "date": "3 days ago" },
+      { "name": "Maya R.", "stars": 4, "text": "Cold, crisp, properly poured. Tap selection could be larger but the quality is high.", "date": "2 weeks ago" }
+    ]
+  },
+  "chocolate-cake": {
+    "rating": 4.8,
+    "reviewCount": 287,
+    "reviews": [
+      { "name": "Sophie K.", "stars": 5, "text": "Dense, dark, barely sweet — exactly how I like it. Salt on top is genius.", "date": "2 days ago" },
+      { "name": "Ravi J.", "stars": 5, "text": "Best flourless cake I have had. Crème fraîche cuts the richness perfectly.", "date": "1 week ago" }
+    ]
+  },
+  "creme-brulee": {
+    "rating": 4.7,
+    "reviewCount": 214,
+    "reviews": [
+      { "name": "Charlotte M.", "stars": 5, "text": "Crust shattered with a tap. Custard was silky vanilla heaven.", "date": "5 days ago" },
+      { "name": "Henry P.", "stars": 4, "text": "Classic done well. Could use slightly more berries on top.", "date": "1 month ago" }
+    ]
+  },
+  "tiramisu": {
+    "rating": 4.6,
+    "reviewCount": 176,
+    "reviews": [
+      { "name": "Stefano R.", "stars": 5, "text": "Actual tiramisu, not the sugary American version. Marsala comes through clearly.", "date": "1 week ago" },
+      { "name": "Imani L.", "stars": 4, "text": "Lovely texture, not too sweet. The cocoa dusting is a nice touch.", "date": "3 weeks ago" }
+    ]
+  },
+  "apple-pie": {
+    "rating": 4.5,
+    "reviewCount": 142,
+    "reviews": [
+      { "name": "Joyce A.", "stars": 5, "text": "Warm crumble + cold ice cream. The pecan crunch made it for me.", "date": "4 days ago" },
+      { "name": "Brent H.", "stars": 4, "text": "Lovely and comforting. A touch more cinnamon would push it over the top.", "date": "2 weeks ago" }
+    ]
+  }
+}
