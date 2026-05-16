@@ -8,7 +8,7 @@ The AI parses natural-language orders like *"two spicy chicken sandwiches, a Cae
 
 ## Contents
 
-1. [Demo](#demo) · [Quick start](#quick-start)
+1. [Quick start](#quick-start)
 2. [User functionality](#user-functionality)
 3. [UI experience & usability](#ui-experience--usability)
 4. [AI-driven cart interactions](#ai-driven-cart-interactions)
@@ -17,13 +17,6 @@ The AI parses natural-language orders like *"two spicy chicken sandwiches, a Cae
 7. [Tests & verification tools](#tests--verification-tools)
 8. [Improvements intentionally not done](#improvements-intentionally-not-done)
 9. [AI tooling used to build it](#ai-tooling-used-to-build-it)
-
----
-
-## Demo
-
-> Loom:
-
 ---
 
 ## Quick start
